@@ -1,5 +1,24 @@
 #!/usr/bin/with-contenv sh
 
+CONFIG_FILE=/config/config.ini
+
+# create initial config file
+if [[ ! -f "$CONFIG_FILE" ]]; then
+  cat <<EOF >"$CONFIG_FILE"
+[General]
+check_github = 0
+[Advanced]
+system_analytics = 0
+EOF
+  # not a good practice but I cant think anything better
+  chown -R $PUID:$PGID /config
+else
+  # disable check_github for updates
+  sed -i "/^check_github[ ]/s/=.*/= 0/" "$CONFIG_FILE"
+  # disable analytics reports
+  sed -i "/^system_analytics[ ]/s/=.*/= 0/" "$CONFIG_FILE"
+fi
+
 # change chdir
 cd /config
 
