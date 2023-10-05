@@ -1,13 +1,12 @@
 # syntax=docker/dockerfile:1-labs
 FROM public.ecr.aws/docker/library/alpine:3.18 AS base
+ARG BRANCH
+ARG VERSION
 ENV TZ=UTC
 
 # source stage =================================================================
 FROM base AS source
-
 WORKDIR /src
-ARG BRANCH
-ARG VERSION
 
 # mandatory build-arg
 RUN test -n "$BRANCH" && test -n "$VERSION"
@@ -28,6 +27,7 @@ RUN echo "$BRANCH" > branch.txt && echo "v$VERSION" > version.txt
 
 # build stage ==================================================================
 FROM base AS build-backend
+WORKDIR /src
 
 # dependencies
 RUN apk add --no-cache build-base python3-dev git libffi-dev
