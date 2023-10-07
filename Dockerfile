@@ -12,7 +12,7 @@ WORKDIR /src
 RUN test -n "$BRANCH" && test -n "$VERSION"
 
 # get and extract source from git
-ADD https://raw.githubusercontent.com/Tautulli/tautulli-baseimage/python3/requirements.txt ./requirements-base.txt
+ADD https://raw.githubusercontent.com/Tautulli/tautulli-baseimage/python3/requirements.txt ./base-requirements.txt
 ADD https://github.com/Tautulli/Tautulli.git#v$VERSION ./
 
 # tautulli versioning
@@ -31,11 +31,11 @@ WORKDIR /src
 RUN apk add --no-cache build-base python3-dev git libffi-dev
 
 # copy requirements
-COPY --from=source /src/requirements*.txt ./
+COPY --from=source /src/requirements.txt /src/base-requirements.txt ./
 
 # creates python env
 RUN python3 -m venv /opt/venv && \
-    /opt/venv/bin/pip install -r requirements-base.txt -r requirements.txt
+    /opt/venv/bin/pip install -r base-requirements.txt -r requirements.txt
 
 # runtime stage ================================================================
 FROM base
