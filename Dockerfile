@@ -23,7 +23,7 @@ RUN echo "$BRANCH" > branch.txt && echo "v$VERSION" > version.txt
 # COPY patches ./
 # RUN find . -name "*.patch" -print0 | sort -z | xargs -t -0 -n1 patch -p1 -i
 
-# build stage ==================================================================
+# backend stage ==================================================================
 FROM base AS build-backend
 WORKDIR /src
 
@@ -37,6 +37,13 @@ COPY --from=source /src/requirements.txt /src/base-requirements.txt ./
 RUN python3 -m venv /opt/venv && \
     /opt/venv/bin/pip install -r base-requirements.txt -r requirements.txt
 
+# backend source
+COPY --from=source /src/plexpy /app/plexpy
+COPY --from=source /src/lib /app/lib
+COPY --from=source /src/data /app/data
+COPY --from=source /src/version.txt /src/branch.txt /app
+COPY --from=source /src/Tautulli.py /app
+
 # runtime stage ================================================================
 FROM base
 
@@ -48,7 +55,7 @@ EXPOSE 8181
 
 # copy files
 COPY --from=build-backend /opt/venv /opt/venv
-COPY --from=source /src /app
+COPY --from=build-backend /app /app
 COPY ./rootfs /
 
 # runtime dependencies
