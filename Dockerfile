@@ -41,8 +41,8 @@ RUN python3 -m venv /opt/venv && \
 COPY --from=source /src/plexpy /app/plexpy
 COPY --from=source /src/lib /app/lib
 COPY --from=source /src/data /app/data
-COPY --from=source /src/version.txt /src/branch.txt /app
-COPY --from=source /src/Tautulli.py /app
+COPY --from=source /src/version.txt /src/branch.txt /app/
+COPY --from=source /src/Tautulli.py /app/
 
 # runtime stage ================================================================
 FROM base
@@ -53,13 +53,13 @@ WORKDIR /config
 VOLUME /config
 EXPOSE 8181
 
+# runtime dependencies
+RUN apk add --no-cache tzdata s6-overlay python3 curl
+
 # copy files
 COPY --from=build-backend /opt/venv /opt/venv
 COPY --from=build-backend /app /app
 COPY ./rootfs /
-
-# runtime dependencies
-RUN apk add --no-cache tzdata s6-overlay python3 curl
 
 # creates python env
 ENV PATH="/opt/venv/bin:$PATH"
