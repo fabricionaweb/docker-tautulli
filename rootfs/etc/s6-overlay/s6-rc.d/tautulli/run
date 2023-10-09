@@ -13,9 +13,9 @@ EOF
   chown $PUID:$PGID "$CONFIG_FILE"
 else
   # disable check_github for updates
-  sed -i "/^check_github[ ]/s/=.*/= 0/" "$CONFIG_FILE"
+  sed -i "/^check_github[ ]*/s/=.*/= 0/" "$CONFIG_FILE"
   # disable analytics reports
-  sed -i "/^system_analytics[ ]/s/=.*/= 0/" "$CONFIG_FILE"
+  sed -i "/^system_analytics[ ]*/s/=.*/= 0/" "$CONFIG_FILE"
 fi
 
 # change chdir
