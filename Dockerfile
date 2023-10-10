@@ -52,7 +52,7 @@ COPY --from=source /src/lib /app/lib
 COPY --from=source /src/data /app/data
 COPY --from=source /src/Tautulli.py /src/version.txt /src/branch.txt /app/
 COPY --from=build-venv /opt/venv /opt/venv
-COPY ./rootfs /
+COPY ./rootfs/. /
 
 # creates python env
 ENV PATH="/opt/venv/bin:$PATH"
