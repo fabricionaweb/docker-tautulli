@@ -15,11 +15,6 @@ ADD https://github.com/Tautulli/Tautulli.git#v$VERSION ./
 ARG BRANCH
 RUN echo "$BRANCH" > branch.txt && echo "v$VERSION" > version.txt
 
-# apply available patches
-# RUN apk add --no-cache patch
-# COPY patches ./
-# RUN find . -name "*.patch" -print0 | sort -z | xargs -t -0 -n1 patch -p1 -i
-
 # virtual env stage ============================================================
 FROM base AS build-venv
 WORKDIR /src
