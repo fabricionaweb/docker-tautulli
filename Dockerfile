@@ -44,7 +44,7 @@ RUN apk add --no-cache tzdata s6-overlay python3 curl
 COPY --from=source /src/plexpy /app/plexpy
 COPY --from=source /src/lib /app/lib
 COPY --from=source /src/data /app/data
-COPY --from=source /src/Tautulli.py /src/version.txt /src/branch.txt /app/
+COPY --from=source /src/Tautulli.py /src/version.txt /src/branch.txt /src/CHANGELOG.md /app/
 COPY --from=build-venv /opt/venv /opt/venv
 COPY ./rootfs/. /
 
