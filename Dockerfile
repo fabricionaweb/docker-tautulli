@@ -37,9 +37,6 @@ WORKDIR /config
 VOLUME /config
 EXPOSE 8181
 
-# runtime dependencies
-RUN apk add --no-cache tzdata s6-overlay python3 curl
-
 # copy files
 COPY --from=source /src/plexpy /app/plexpy
 COPY --from=source /src/lib /app/lib
@@ -47,6 +44,9 @@ COPY --from=source /src/data /app/data
 COPY --from=source /src/Tautulli.py /src/version.txt /src/branch.txt /src/CHANGELOG.md /app/
 COPY --from=build-venv /opt/venv /opt/venv
 COPY ./rootfs/. /
+
+# runtime dependencies
+RUN apk add --no-cache tzdata s6-overlay python3 curl
 
 # creates python env
 ENV PATH="/opt/venv/bin:$PATH"
